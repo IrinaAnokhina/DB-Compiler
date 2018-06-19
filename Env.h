@@ -18,7 +18,7 @@ public:
 protected:
 	shared_ptr<Env>prev;
 private:
-	multimap<shared_ptr<Token>, shared_ptr<Id>>table;
+	map<shared_ptr<Token>, shared_ptr<Id>>table;
 };
 
 Env::Env(shared_ptr<Env>n)
@@ -33,7 +33,6 @@ void Env::put( shared_ptr<Token> w, shared_ptr<Id> i)
 
  shared_ptr<Id> Env::get(const shared_ptr<Token> &w)
 {
-	//std::multimap<shared_ptr<Token>, shared_ptr<Id>>::iterator found;
 	 auto found = table.find(w);
 	if (found != table.end())
 			return found->second;
