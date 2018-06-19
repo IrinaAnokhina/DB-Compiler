@@ -81,7 +81,7 @@ Parser::Parser(shared_ptr<Lexer>l, HWND h)
 }
 Parser::~Parser()
 {
-	Node::labels = 0;              //  don`t work!!
+	Node::labels = 0;              
 }
 void Parser::match(int t)
 {
