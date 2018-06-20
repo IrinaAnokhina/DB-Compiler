@@ -18,8 +18,8 @@ Break::Break()
 {
 	if (Stmt::Enclosing == nullptr)
 		error("unenclosed break");
-	stmt = Stmt::Enclosing;
 	//save enclosing structure
+	stmt = Stmt::Enclosing;
 }
 
 void Break::gen(int b, int a)
