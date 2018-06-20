@@ -5,7 +5,7 @@ using std::dynamic_pointer_cast;
 #include"Set.h"
 
 //for(S1; B; S2;) S3
-class For : public Stmt                            
+class For : public Stmt
 {
 public:
 	For(shared_ptr<Stmt>s1, shared_ptr<Expr>x, shared_ptr<Stmt>s2, shared_ptr<Stmt>s3);
@@ -54,19 +54,19 @@ void For::gen(int b, int a)
 {
 	after = a;
 	init_val->gen(b, a);
-	int label = newLabel();					
-	//start of B
+
+	int label = newLabel();
 	int label2 = newLabel();
 	begin = label2;
+	//start of B
 	emitLabel(label);
-	condition->jumping(0, a);				
 	//B.true = fall    B.false = after
-	instruction->gen(label, label2);		
-	// S2.next = S3 
-	emitLabel(label2);						
+	condition->jumping(0, a);
+	// S3.next = S2 
+	instruction->gen(label, label2);
+	emitLabel(label2);
 	//start of S2 (step)
-	step->gen(label2, label);				
-	// S3.next = begin of S2
+	step->gen(label2, label);
+	// S3.next = begin of B
 	emit("goto L" + std::to_string(label));
 }
-
