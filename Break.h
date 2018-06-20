@@ -16,7 +16,7 @@ public:
 
 Break::Break()
 {
-	if (Stmt::Enclosing == NULL)
+	if (Stmt::Enclosing == nullptr)
 		error("unenclosed break");
 	stmt = Stmt::Enclosing;
 	//save enclosing structure
