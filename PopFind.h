@@ -44,11 +44,18 @@ BOOL PopFindFindText(HWND hwndEdit, int *piSearchOffset, LPFINDREPLACE pfr)
 	PSTR pstrDoc, pstrPos;
 	// Read in the edit document
 	iLength = GetWindowTextLength(hwndEdit);
-	pstrDoc = (PSTR)new char[iLength + 1];
-	GetWindowText(hwndEdit, pstrDoc, iLength + 1);
-	// Search the document for the find string
-	pstrPos = strstr(pstrDoc + *piSearchOffset, pfr->lpstrFindWhat);
-	delete[]pstrDoc;
+	try {
+		pstrDoc = (PSTR)new char[iLength + 1];
+		GetWindowText(hwndEdit, pstrDoc, iLength + 1);
+		// Search the document for the find string
+		pstrPos = strstr(pstrDoc + *piSearchOffset, pfr->lpstrFindWhat);
+		delete[]pstrDoc;
+	}
+	catch (std::bad_alloc &ba)
+	{
+		std::cout << ba.what() << std::endl;
+		iLength = NULL;
+	}
 	// Return an error code if the string cannot be found
 	if (pstrPos == NULL)
 		return FALSE;
