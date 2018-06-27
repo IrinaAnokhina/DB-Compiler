@@ -64,23 +64,22 @@ BOOL PopFileRead(HWND hwndEdit, PSTR pstrFileName)
 		return FALSE;
 	iLength = ifile.tellg();
 	ifile.seekg(0, ios_base::beg);
-	//not sure
 	try {
-		pstrBuffer = (PSTR) new char[(long)iLength + 1];        
+		pstrBuffer = (PSTR) new char[(long)iLength + 1];  
+		ifile.read(pstrBuffer, iLength);
+		ifile.close();
+		pstrBuffer[(long)iLength] = '\0';
+		SetWindowText(hwndEdit, pstrBuffer);
+		delete[]pstrBuffer;
+		return TRUE;
 	}
 	catch (std::bad_alloc &ba)
 	{
 		std::cout << ba.what() << std::endl;
-		pstrBuffer = NULL;
 		iLength = NULL;
-		//exit(EXIT_FAILURE);
+		return FALSE;
 	}
-	ifile.read(pstrBuffer, iLength);
-	ifile.close();
-	pstrBuffer[(long)iLength] = '\0';
-	SetWindowText(hwndEdit, pstrBuffer);
-	delete[]pstrBuffer;
-	return TRUE;
+	
 }
 BOOL PopFileWrite(HWND hwndEdit, PSTR pstrFileName)
 {
@@ -92,17 +91,17 @@ BOOL PopFileWrite(HWND hwndEdit, PSTR pstrFileName)
 	iLength = GetWindowTextLength(hwndEdit);
 	try {
 		pstrBuffer = (PSTR)new char[iLength + 1];
+		GetWindowText(hwndEdit, pstrBuffer, iLength + 1);
+		ofile.write(pstrBuffer, iLength);
+		ofile.close();
+		delete[]pstrBuffer;
+		return TRUE;
 	}
 	catch (std::bad_alloc &ba)
 	{
 		std::cout << ba.what() << std::endl;
-		pstrBuffer = NULL;
 		iLength = NULL;
-		//exit(EXIT_FAILURE);
+		return FALSE;
 	}
-	GetWindowText(hwndEdit, pstrBuffer, iLength + 1);
-	ofile.write(pstrBuffer, iLength);
-	ofile.close();
-	delete[]pstrBuffer;
-	return TRUE;
+	
 }
